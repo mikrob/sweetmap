@@ -1,0 +1,95 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:a4j="http://richfaces.org/a4j"
+    template="/layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header"><h:outputText value="#{messages['org.sweetmap.textentry.list.title']}" /></f:facet>
+
+        <s:div styleClass="results" id="textentrylistresult">
+
+            <h:outputText value="#{messages['org.sweetmap.textentry.list.noone']}" rendered="#{empty textEntries}"/>
+            <h:form>
+            <rich:datascroller for="textEntryList" page="#{textEntryList.currentPage}"/>
+            <rich:dataTable id="textEntryList" var="textEntry"  value="#{textEntries}"  rendered="#{not empty textEntries}" rows="20" rowKeyVar="currentRow">
+               <f:facet name="header">
+                  <rich:columnGroup>
+                      <rich:column>
+                        <h:outputText value="#{messages['org.sweetmap.title']}" />
+                      </rich:column>
+                      <rich:column>
+                          <h:outputText value="#{messages['org.sweetmap.category']}" />
+                      </rich:column>
+                      <rich:column>
+                          <h:outputText value="#{messages['org.sweetmap.author']}" />
+                      </rich:column>
+                      <rich:column>
+                          <h:outputText value="#{messages['org.sweetmap.addedby']}" />
+                      </rich:column>
+                      <rich:column>
+                          <h:outputText value="#{messages['org.sweetmap.status']}" />
+                      </rich:column>
+                      <rich:column >
+                          <h:outputText value="#{messages['org.sweetmap.language']}" />
+                      </rich:column>
+                      <rich:column>
+                          <h:outputText value="#{messages['org.sweetmap.actions']}" />
+                      </rich:column>
+                  </rich:columnGroup>
+                </f:facet>
+                <rich:column>
+                    <s:link id="textEntry" value="#{textEntry.getFormatedTitle()}"  propagation="none" view="/admin/textEntry.xhtml">
+                        <f:param name="textEntryId"  value="#{textEntry.id}"/>
+                    </s:link>
+                </rich:column>
+                <rich:column>
+                  <h:outputText value="#{textEntry.category.name}" rendered="#{not empty textEntry.category}" />
+                </rich:column>
+                <rich:column>
+                  <h:outputText value="#{textEntry.user}" />
+                </rich:column>
+                <rich:column>
+                  <h:outputText value="#{textEntry.addedBy}" />
+                </rich:column>
+                <rich:column>
+                  <h:outputText value="#{textEntry.status.getFullName()}" />
+                </rich:column>
+                <rich:column>
+                  <h:outputText value="#{textEntry.language}" />
+                </rich:column>
+                <rich:column><!--
+                <a4j:commandLink  action="#{textEntryList.deleteTextEntry()}"  ajaxSingle="true" reRender="textentrylistresult" >
+                   <h:graphicImage value="/img/error.gif" alt="#{messages['org.sweetmap.delete']}" title="#{messages['org.sweetmap.delete']}" />
+                </a4j:commandLink >
+                --><s:link id="editTextEntryLink" propagation="none" view="/admin/textEntry.xhtml">
+                            <f:param name="textEntryId"  value="#{textEntry.id}"/>
+                            <h:graphicImage value="/img/process.png" alt="Edit" height="16" title="Edit" />
+                </s:link>
+                <a4j:status id="actionStatus">
+                <f:facet name="start">
+                  <h:graphicImage value="/img/ajax-loader.gif" styleClass="loader"/>
+                </f:facet>
+                </a4j:status>
+                </rich:column>
+            </rich:dataTable>
+            </h:form>
+
+        </s:div>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+        <s:button id="createtextentry" value="#{messages['org.sweetmap.textentry.list.create']}" view="/textEntry.xhtml"/>
+    </div>
+
+</ui:define>
+
+</ui:composition>

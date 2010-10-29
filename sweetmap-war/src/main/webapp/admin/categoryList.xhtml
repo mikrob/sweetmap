@@ -1,0 +1,52 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">categoryList</f:facet>
+
+        <div class="results">
+
+            <h:outputText value="No category exists"
+                       rendered="#{empty categoryList.resultList}"/>
+
+            <rich:dataTable id="categoryList" var="category" value="#{categoryList.resultList}" rendered="#{not empty categoryList.resultList}">
+                <rich:column>
+                    <f:facet name="header">Name</f:facet>
+                    <s:link id="category" value="#{category.name}" propagation="none" view="/admin/category.xhtml">
+                        <f:param name="categoryId" value="#{category.id}"/>
+                    </s:link>
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">Language</f:facet>
+                    <h:outputText value="#{category.language}" />
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">Color</f:facet>
+                    <rich:colorPicker colorMode="rgb" value="#{category.color}" showEvent=""/>
+
+                <!--<div style="background-color: rgb(#{category.color.red},#{category.color.green}, #{category.color.blue});"></div>
+                --></rich:column>
+            </rich:dataTable>
+
+        </div>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+        <s:button id="done"
+               value="Create category"
+                view="/admin/category.xhtml"/>
+    </div>
+
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,49 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">propertiesFileList</f:facet>
+
+        <div class="results">
+
+            <h:outputText value="No propertiesFile exists"
+                       rendered="#{empty propertiesFileList.resultList}"/>
+
+            <h:dataTable id="propertiesFileList" var="propertiesFile" value="#{propertiesFileList.resultList}" rendered="#{not empty propertiesFileList.resultList}">
+                <h:column>
+                    <f:facet name="header">Id</f:facet>
+                    #{propertiesFile.id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Path</f:facet>
+                    <s:link id="propertiesFile" value="#{propertiesFile.filePath}" propagation="none" view="/admin/crud/propertiesFile.xhtml">
+                        <f:param name="propertiesFileId" value="#{propertiesFile.id}"/>
+                    </s:link>
+                </h:column>
+            </h:dataTable>
+
+        </div>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+        <s:button id="done"
+               value="Create propertiesFile"
+                view="/admin/crud/propertiesFile.xhtml"/>
+    </div>
+    <h:form>
+    	<h:commandButton action="#{propertyReloader.reloadProperties}" value="Reload properties" />
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

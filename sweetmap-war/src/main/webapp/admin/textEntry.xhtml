@@ -1,0 +1,98 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:a4j="http://richfaces.org/a4j"
+    template="/layout/template.xhtml"
+    >
+
+
+<ui:define name="body">
+    <h:form id="textEntryForm">
+        <s:validateAll>
+        <rich:panel>
+            <f:facet name="header"><h:outputText value="#{messages['org.sweetmap.textentry.addtextentry']}" /></f:facet>
+
+            <h:panelGrid columns="1"  cellpadding="1" cellspacing="1">
+
+            <h:panelGroup>
+            <s:decorate id="nameField" template="/layout/edit.xhtml">
+                <ui:define name="label"><h:outputText value="#{messages['org.sweetmap.title']}" /></ui:define>
+                <h:inputText id="name" required="true"  size="40"  value="#{textEntryHome.instance.title}" />
+            </s:decorate>
+            </h:panelGroup>
+            <h:panelGroup>
+            <s:decorate id="authorField" template="/layout/edit.xhtml">
+                <ui:define name="label"><h:outputText value="#{messages['org.sweetmap.author']}" /></ui:define>
+                <h:inputText id="name" required="true"  size="40"  value="#{textEntryHome.instance.user}" />
+            </s:decorate>
+
+            </h:panelGroup>
+
+            <h:panelGroup>
+            <s:decorate id="contentField" template="/layout/edit.xhtml" >
+            <ui:define name="label">Contenu</ui:define>
+              <h:inputTextarea value="#{textEntryHome.instance.content}" rows="10" cols="80"  />
+
+               <!--
+              <rich:editor  id="editor" width="800" height="450" value="#{textEntryHome.instance.content}" >
+                <f:param name="theme_advanced_toolbar_location" value="top"/>
+                <f:param name="theme_advanced_toolbar_align" value="left"/>
+                <f:param name="theme_advanced_resizing" value="true"/>
+              </rich:editor>               -->
+            </s:decorate>
+
+           </h:panelGroup>
+
+          <h:panelGroup>
+            <s:decorate id="categoryField"  template="/layout/edit.xhtml">
+                <ui:define name="label"><h:outputText value="#{messages['org.sweetmap.category']}" /></ui:define>
+                <h:selectOneMenu value="#{textEntryHome.instance.category}" >
+                  <s:selectItems value="#{categoryList.resultList}"  var="category" label="#{category.name}" noSelectionLabel="#{messages['org.sweetmap.selectcategorynolabel']}"/>
+                  <s:convertEntity />
+                </h:selectOneMenu>
+            </s:decorate>
+            </h:panelGroup>
+
+      <h:panelGroup>
+        <s:decorate id="statusField" template="/layout/edit.xhtml">
+        <ui:define name="label"><h:outputText value="#{messages['org.sweetmap.status']}"/></ui:define>
+        <h:selectOneMenu value="#{textEntryHome.instance.status}" >
+          <s:selectItems var="status" value="#{textEntryStatutList}"  noSelectionLabel="#{messages['org.sweetmap.selectstatusnolabel']}" label="#{status.getFullName()}"/>
+          <s:convertEnum />
+        </h:selectOneMenu>
+        </s:decorate>
+
+        <s:decorate id="langaugeField" template="/layout/edit.xhtml">
+        <ui:define name="label"><h:outputText value="#{messages['org.sweetmap.language']}"/></ui:define>
+        <h:selectOneMenu value="#{textEntryHome.instance.language}">
+          <f:selectItem itemLabel="#{messages['org.sweetmap.selectlanguage']}" itemValue=""/>
+          <f:selectItem itemLabel="#{messages['org.sweetmap.english']}" itemValue="en"/>
+          <f:selectItem itemLabel="#{messages['org.sweetmap.french']}" itemValue="fr"/>
+        </h:selectOneMenu>
+        </s:decorate>
+
+      </h:panelGroup>
+
+       <h:panelGroup>
+          <div class="actionButtons">
+              <h:commandButton id="save"  value="#{messages['org.sweetmap.save']}" action="#{textEntryHome.persist}"  rendered="#{!textEntryHome.managed}"/>
+              <h:commandButton id="update" value="#{messages['org.sweetmap.update']}" action="#{textEntryHome.update}"  rendered="#{textEntryHome.managed}"/>
+              <h:commandButton id="delete" value="#{messages['org.sweetmap.delete']}"  action="#{textEntryHome.remove}" immediate="true" rendered="#{textEntryHome.managed}"/>
+              <s:button propagation="end" id="cancel" value="#{messages['org.sweetmap.cancel']}"  view="/admin/textEntryList.xhtml"/>
+          </div>
+          </h:panelGroup>
+
+        </h:panelGrid>
+
+        </rich:panel>
+        </s:validateAll>
+  </h:form>
+
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,44 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:s="http://jboss.com/products/seam/taglib"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:rich="http://richfaces.org/rich"
+  template="/layout/template.xhtml">
+
+  <ui:define name="body">
+
+    <h:form id="propertiesFileForm">
+
+      <rich:panel>
+        <f:facet name="header">propertiesFile</f:facet>
+
+        <s:decorate id="nameField" template="/layout/edit.xhtml">
+          <ui:define name="label">Full Path (be sure file exists and is writable)</ui:define>
+          <h:inputText id="name" required="true" value="#{propertiesFileHome.instance.filePath}" />
+        </s:decorate>
+        <div style="clear: both" />
+        <br />
+        <rich:separator height="15"/>
+        <h:outputText value="File Content :" /><br />
+        <h:outputText value="#{propertiesFileHome.content}" rendered="#{not empty propertiesFileHome.content}" />
+
+
+      </rich:panel>
+
+      <div class="actionButtons"><h:commandButton id="save"
+        value="Save" action="#{propertiesFileHome.persist}"
+        rendered="#{!propertiesFileHome.managed}" />
+
+        <h:commandButton id="update" value="Save" action="#{propertiesFileHome.update}" rendered="#{propertiesFileHome.managed}" />
+        <h:commandButton id="delete" value="Delete" action="#{propertiesFileHome.remove}" immediate="true" rendered="#{propertiesFileHome.managed}" />
+        <s:button propagation="end" id="cancel" value="Cancel" view="/admin/crud/propertiesFileList.xhtml" />
+      </div>
+
+    </h:form>
+
+  </ui:define>
+
+</ui:composition>

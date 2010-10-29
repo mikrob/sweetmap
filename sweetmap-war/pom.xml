@@ -1,0 +1,201 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <groupId>sweetmap</groupId>
+    <artifactId>sweetmap</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>sweetmap</groupId>
+  <artifactId>sweetmap-war</artifactId>
+  <packaging>war</packaging>
+
+  <name>sweetmap-war</name>
+  <description>Web project for sweetmap.</description>
+  <inceptionYear>2008</inceptionYear>
+  <organization>
+    <name>sweetmap</name>
+    <url>http://www.dreamisle.net/sweetmap</url>
+  </organization>
+
+  <dependencies>
+
+    <!-- JBoss Seam -->
+    <!-- dependency>
+    <groupId>org.jboss.seam</groupId>
+    <artifactId>jboss-seam</artifactId>
+    <exclusions>
+      <exclusion>
+        <groupId>javassist</groupId>
+        <artifactId>javassist</artifactId>
+      </exclusion>
+    </exclusions>
+    </dependency-->
+    <dependency>
+      <groupId>org.jboss.seam</groupId>
+      <artifactId>jboss-seam-ioc</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.jboss.seam</groupId>
+          <artifactId>jboss-seam</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.jboss.el</groupId>
+          <artifactId>jboss-el</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.seam</groupId>
+      <artifactId>jboss-seam-mail</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.jboss.seam</groupId>
+          <artifactId>jboss-seam</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.jboss.el</groupId>
+          <artifactId>jboss-el</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.seam</groupId>
+      <artifactId>jboss-seam-pdf</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.jboss.seam</groupId>
+          <artifactId>jboss-seam</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.jboss.el</groupId>
+          <artifactId>jboss-el</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.seam</groupId>
+      <artifactId>jboss-seam-remoting</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.jboss.seam</groupId>
+          <artifactId>jboss-seam</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.jboss.el</groupId>
+          <artifactId>jboss-el</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.seam</groupId>
+      <artifactId>jboss-seam-ui</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.jboss.seam</groupId>
+          <artifactId>jboss-seam</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.jboss.el</groupId>
+          <artifactId>jboss-el</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.seam</groupId>
+      <artifactId>jboss-seam-debug</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.jboss.seam</groupId>
+          <artifactId>jboss-seam</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.jboss.el</groupId>
+          <artifactId>jboss-el</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+        <groupId>org.jboss.seam</groupId>
+        <artifactId>jboss-seam-resteasy</artifactId>
+        <scope>provided</scope>
+      </dependency>
+
+    <!-- RichFaces -->
+    <dependency>
+      <groupId>org.richfaces.framework</groupId>
+      <artifactId>richfaces-impl</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.richfaces.ui</groupId>
+      <artifactId>richfaces-ui</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.richfaces.framework</groupId>
+      <artifactId>richfaces-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- iText -->
+    <dependency>
+      <groupId>com.lowagie</groupId>
+      <artifactId>itext</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Jakarta commons -->
+    <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-digester</groupId>
+      <artifactId>commons-digester</artifactId>
+    </dependency>
+
+    <!-- jee -->
+    <dependency>
+      <groupId>com.sun.facelets</groupId>
+      <artifactId>jsf-facelets</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.faces</groupId>
+      <artifactId>jsf-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.faces</groupId>
+      <artifactId>jsf-impl</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.0</version>
+      </plugin>
+    </plugins>
+  </build>
+
+  <distributionManagement>
+    <site>
+      <id>localserver</id>
+      <name>apache local</name>
+      <url>file:/var/www/patator/maven-sweetmap/sweetmap-war/</url>
+    </site>
+  </distributionManagement>
+</project>

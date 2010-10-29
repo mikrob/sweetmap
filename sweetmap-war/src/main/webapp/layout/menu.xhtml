@@ -1,0 +1,100 @@
+<rich:toolBar
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich" id="toolbar" itemSeparator="line">
+
+
+        <rich:toolBarGroup>
+          <h:graphicImage value="/img/home.png" styleClass="pic"/>
+          <s:link view="/home.xhtml" value="#{messages['org.sweetmap.menu.home']}"/>
+        </rich:toolBarGroup><!--
+
+        <rich:toolBarGroup>
+        <s:link value="#{messages['org.sweetmap.menu.themap']}" view="/map.xhtml"/>
+        </rich:toolBarGroup>
+        <rich:toolBarGroup>
+        <s:link value="#{messages['org.sweetmap.menu.presentation']}" view="/presentation.xhtml" />
+        </rich:toolBarGroup>
+        <rich:toolBarGroup>
+        <s:link value="#{messages['org.sweetmap.menu.credits']}" view="/credits.xhtml" />
+        </rich:toolBarGroup>
+        <rich:toolBarGroup>
+        <s:link value="#{messages['org.sweetmap.menu.contacts']}" view="/contacts.xhtml"/>
+        </rich:toolBarGroup>
+
+    --><rich:toolBarGroup>
+      <rich:dropDownMenu rendered="#{s:hasRole('Author')}">
+        <f:facet name="label">
+          <h:panelGroup>
+            <h:graphicImage value="/img/book.png" styleClass="pic" />
+            <h:outputText value="#{messages['org.sweetmap.mainmenu.write']}" />
+          </h:panelGroup>
+        </f:facet>
+
+          <rich:menuGroup value="#{messages['org.sweetmap.mainmenu.texts']}">
+            <rich:menuItem submitMode="ajax" value="#{messages['org.sweetmap.writetext']}" action="/admin/textEntry.xhtml" styleClass="menuItem" icon="/img/add.png">
+              <s:conversationPropagation type="end" />
+            </rich:menuItem>
+            <rich:menuItem submitMode="ajax" value="#{messages['org.sweetmap.textlist']}" action="/admin/textEntryList.xhtml" styleClass="menuItem" icon="/img/search_page.png">
+              <s:conversationPropagation type="end" />
+            </rich:menuItem>
+          </rich:menuGroup>
+      </rich:dropDownMenu>
+     </rich:toolBarGroup>
+
+      <rich:toolBarGroup>
+      <rich:dropDownMenu rendered="#{s:hasRole('Administrator')}">
+          <f:facet name="label">
+              <h:panelGroup>
+                  <h:graphicImage value="/img/process.png" styleClass="pic"/>
+                  <h:outputText value="#{messages['org.sweetmap.mainmenu.admin']}"/>
+              </h:panelGroup>
+          </f:facet>
+          <rich:menuGroup value="Users">
+              <rich:menuItem submitMode="ajax" value="User List" action="/admin/userList.xhtml" styleClass="menuItem">
+                <s:conversationPropagation type="end"/>
+              </rich:menuItem>
+              <rich:menuItem submitMode="ajax" value="Add User" action="/admin/user.xhtml" styleClass="menuItem">
+                  <s:conversationPropagation type="end"/>
+              </rich:menuItem>
+              <rich:menuItem submitMode="ajax" value="Role List" action="/admin/cmsRoleList.xhtml" styleClass="menuItem">
+                  <s:conversationPropagation type="end"/>
+              </rich:menuItem>
+              <rich:menuItem submitMode="ajax" value="Add Role" action="/admin/cmsRole.xhtml" styleClass="menuItem">
+                <s:conversationPropagation type="end"/>
+              </rich:menuItem>
+          </rich:menuGroup>
+          <rich:menuGroup value="Categories">
+              <rich:menuItem submitMode="ajax" value="Category List" action="/admin/categoryList.xhtml" styleClass="menuItem">
+                <s:conversationPropagation type="end"/>
+              </rich:menuItem>
+              <rich:menuItem submitMode="ajax" value="Add Category" action="/admin/category.xhtml" styleClass="menuItem">
+                  <s:conversationPropagation type="end"/>
+              </rich:menuItem>
+          </rich:menuGroup>
+        </rich:dropDownMenu>
+    </rich:toolBarGroup>
+
+    <rich:toolBarGroup>
+        <s:link value="Site Node List" view="/admin/siteNodeList.xhtml" rendered="#{s:hasRole('Administrator')}" propagation="none"/>
+    </rich:toolBarGroup>
+
+
+    <rich:toolBarGroup location="right">
+        <h:outputText value="#{messages['org.sweetmap.menu.connectedas']} : #{identity.username}" rendered="#{identity.loggedIn}" escape="false"/>
+        <h:outputText value="#{messages['org.sweetmap.menu.notconnected']}" rendered="#{not identity.loggedIn}" escape="false"/>
+        <h:panelGrid columns="2">
+          <h:graphicImage value="/img/male_user.png" styleClass="pic" rendered="#{not identity.loggedIn}"/>
+          <s:link view="/login.xhtml" value="Login" rendered="#{not identity.loggedIn}" propagation="none"/>
+        </h:panelGrid>
+
+        <h:panelGrid columns="2">
+        <h:graphicImage value="/img/remove_male_user.png" styleClass="pic" rendered="#{identity.loggedIn}"/>
+        <s:link view="/home.xhtml" action="#{identity.logout}" value="Logout" rendered="#{identity.loggedIn}" propagation="none"/>
+        </h:panelGrid>
+    </rich:toolBarGroup>
+</rich:toolBar>

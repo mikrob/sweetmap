@@ -1,0 +1,73 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:a4j="http://richfaces.org/a4j"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+<h:form id="textEntryForm">
+    <rich:panel>
+      <f:facet name="header">Rechercher</f:facet>
+
+      <h:panelGrid columns="2">
+
+      <h:panelGroup>
+          <s:decorate id="nameField" template="/layout/edit.xhtml">
+          <h:inputText value="#{searchService.searchPattern}"/>
+         </s:decorate>
+      </h:panelGroup>
+
+      <h:panelGroup>
+         <a4j:commandLink value="Search"  reRender="searchDiv" status="searchStatus"  action="#{searchService.search}" />
+         <a4j:status id="searchStatus">
+         <f:facet name="start">
+               <h:graphicImage value="/img/ajax-loader.gif" styleClass="loader"/>
+          </f:facet>
+       </a4j:status>
+      </h:panelGroup>
+      </h:panelGrid>
+
+
+       <rich:spacer height="15" />
+     </rich:panel>
+
+    <rich:spacer height="30" />
+
+
+      <h1>Resultats</h1>
+      <s:div id="searchDiv" >
+        <rich:dataTable value="#{searchService.searchResults}" var="textEntry"  rendered="#{not empty searchService.searchResults}">
+           <rich:column>
+            <f:facet name="header">Date</f:facet>
+            <h:outputText value="#{textEntry.date}" escape="false" />
+          </rich:column>
+
+          <rich:column>
+            <f:facet name="header">Titre</f:facet>
+            <s:formattedText value="#{textEntry.title}"></s:formattedText>
+          </rich:column>
+
+           <rich:column>
+            <f:facet name="header">Content</f:facet>
+            <h:outputText value="#{textEntry.content}" escape="false" />
+          </rich:column>
+
+     <rich:column>
+       <f:facet name="header">Categorie</f:facet>
+      <h:outputText value="#{textEntry.category.name}" />
+     </rich:column>
+
+      </rich:dataTable>
+      </s:div>
+
+ </h:form>
+
+
+ </ui:define>
+ </ui:composition>

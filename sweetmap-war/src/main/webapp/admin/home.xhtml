@@ -1,0 +1,32 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:c="http://java.sun.com/jstl/core"
+    template="/layout/template.xhtml" >
+
+    <ui:define name="body">
+     <rich:panel>
+      <h1><h:outputText value="#{messages['org.sweetmap.main.sweetmap']}" escape="false" /></h1>
+      <ul>
+        <li><s:link value="#{messages['org.sweetmap.menu.themap']}" view="/map.xhtml" propagation="none"/></li>
+        <li><s:link value="#{messages['org.sweetmap.menu.presentation']}" view="/presentation.xhtml" propagation="none" /></li>
+        <li><s:link value="#{messages['org.sweetmap.menu.credits']}" view="/credits.xhtml" propagation="none"/></li>
+        <li><s:link value="#{messages['org.sweetmap.menu.contacts']}" view="/contacts.xhtml" propagation="none"/></li>
+      </ul>
+
+      <h:form>
+        <h:selectOneMenu value="#{localeSelector.language}">
+          <f:selectItem itemLabel="#{messages['org.sweetmap.english']}" itemValue="en"/>
+          <f:selectItem itemLabel="#{messages['org.sweetmap.french']}" itemValue="fr"/>
+        </h:selectOneMenu>
+        <h:commandButton action="#{localeSelector.select}" value="#{messages['org.sweetmap.selectlanguage']}"/>
+      </h:form>
+     </rich:panel>
+    </ui:define>
+</ui:composition>

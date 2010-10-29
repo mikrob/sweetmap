@@ -1,0 +1,50 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:subview xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:c="http://java.sun.com/jstl/core"
+    >
+    <a4j:region>
+      <a4j:form>
+        <a4j:jsFunction data="#{proxyManager.textEntry}" name="getTextEntry" ajaxSingle="true" oncomplete="setHtmlText(data);">
+          <a4j:actionparam name="param1" assignTo="#{proxyManager.siteNodeId}" />
+        </a4j:jsFunction>
+        <h:inputHidden name="visitedSites" id="visitedSites" value="#{mapNavigationManager.visitedsSiteAsString}" />
+      </a4j:form>
+    </a4j:region>
+
+      <s:div id="legend" styleClass="legend">
+      <s:div id="maplegend" styleClass="maplegend">
+          <ui:repeat value="#{legendCategoryList}" var="category">
+          <div class="legendBox">
+              <div style="background-color: rgb(#{category.color.red},#{category.color.green},#{category.color.blue}); width: 20px; float:left;"><rich:spacer with="18" height="10"/></div>
+              <span class="categorylabel"><h:outputText value="#{category.name}"/></span>
+          </div>
+          </ui:repeat>
+          <div style="clear:both;"></div>
+     </s:div>
+    </s:div>
+
+    <s:div id="mapcontainerdiv">
+      <f:verbatim>
+      <object width="70%" height="600px">
+        <param name="movie" value="flash/GexfExplorer.swf?path=seam/resource/rest/SiteNodeExporter&amp;curvedEdges=true&amp;clickableNodes&amp;clickableNodes=true&amp;labelsColor=0x000000&amp;font=Verdana" />
+        <param name="allowFullScreen" value="true" />
+        <param name="allowScriptAccess" value="always" />
+        <param name="WMODE" value="transparent" />
+        <param name="bgcolor" value="#FFFFFF" />
+        <embed WMODE="transparent" src="flash/GexfExplorer.swf?path=seam/resource/rest/SiteNodeExporter&amp;curvedEdges=true&amp;clickableNodes=true&amp;labelsColor=0x000000&amp;font=Verdana" allowfullscreen="true" allowScriptAccess="always" width="70%" height="600px" bgcolor="#CCCCCC">
+        </embed>
+       </object>
+       </f:verbatim>
+    </s:div>
+
+  <div style="clear:both;"></div>
+
+
+</f:subview>

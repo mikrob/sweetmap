@@ -1,0 +1,248 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:s="http://jboss.com/products/seam/taglib"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:rich="http://richfaces.org/rich"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:c="http://java.sun.com/jstl/core"
+  template="/layout/template.xhtml">
+
+  <ui:define name="head">
+  <a4j:loadStyle src="/stylesheet/colorbox.css" />
+  <a4j:loadScript src="resource://jquery.js"/>
+  <a4j:loadScript src="/javascript/jquery.colorbox.js"/>
+  <f:verbatim>
+
+   <script type="text/javascript">
+   /*<![CDATA[*/
+    function openPopup(url) {
+      var httpurl = "http://" + url;
+      jQuery.fn.colorbox({href:httpurl, open:true, width:"80%",iframe:true, height:"750px", scrolling:true});
+    }
+
+    function checkAll() {
+      jQuery("#sitenodedatatableform:siteNodeListTable input[type=checkbox]").each(function() {
+            this.checked = !this.checked;
+        });
+    }
+    /*]]>*/
+    /*jQuery(document).ready(function() {
+      jQuery("#siteNodeSearch:checkAllButton").click(function(){
+        jQuery("#sitenodedatatableform:siteNodeListTable input[type=checkbox]").each(function() {
+            this.checked = !this.checked;
+        });
+      });
+    });*/
+    </script>
+
+  </f:verbatim>
+
+  </ui:define>
+
+  <ui:define name="body">
+        <h:form id="siteNodeSearch">
+          <rich:simpleTogglePanel label="Site Node Search Filter" switchType="ajax" id="filterpaneltoggle">
+            <s:decorate id="nameField" template="/layout/display.xhtml">
+                <ui:define name="label">Name</ui:define>
+                <h:inputText id="name" size="50"  value="#{siteNodeListBean.siteNodeFilter.name}" />
+            </s:decorate>
+
+            <s:decorate id="urlField" template="/layout/display.xhtml">
+                <ui:define name="label">URL</ui:define>
+                <h:inputText id="url" size="50"  value="#{siteNodeListBean.siteNodeFilter.url}" />
+            </s:decorate>
+
+            <s:decorate id="descriptionField" template="/layout/display.xhtml">
+                <ui:define name="label">Description</ui:define>
+                <h:inputText id="url" size="50"  value="#{siteNodeListBean.siteNodeFilter.description}" />
+            </s:decorate>
+
+            <s:decorate id="categoryField"  template="/layout/display.xhtml">
+                <ui:define name="label">Categorie</ui:define>
+                <h:selectOneMenu value="#{siteNodeListBean.siteNodeFilter.category}" >
+                  <s:selectItems value="#{categoryList.resultList}"  var="category" label="#{category.name}" noSelectionLabel="Selectionnez une categorie..."/>
+                  <s:convertEntity />
+                </h:selectOneMenu>
+            </s:decorate>
+
+
+          <s:decorate id="statusField"  template="/layout/display.xhtml">
+           <ui:define name="label">Status</ui:define>
+           <h:selectOneMenu value="#{siteNodeListBean.siteNodeFilter.siteNodeStatus}" >
+              <s:selectItems var="status" value="#{siteNodeStatusList}"  noSelectionLabel="Selectionnez un status..." label="#{status.getFullName()}"/>
+             <s:convertEnum />
+          </h:selectOneMenu>
+          </s:decorate>
+
+        <s:decorate id="languageField" template="/layout/display.xhtml">
+        <ui:define name="label">Language</ui:define>
+        <h:selectOneMenu value="#{siteNodeListBean.siteNodeFilter.language}">
+          <f:selectItem itemLabel="Selectionnez une langue" itemValue=""/>
+          <f:selectItem itemLabel="English" itemValue="en"/>
+          <f:selectItem itemLabel="Francais" itemValue="fr"/>
+        </h:selectOneMenu>
+        </s:decorate>
+
+        <br />
+          <rich:toolBar id="bar" height="30">
+            <rich:toolBarGroup>
+              <s:link view="/admin/siteNode.xhtml" propagation="none" value="#{messages['org.sweetmap.sitenode.create']}" /><br />
+            </rich:toolBarGroup>
+            <rich:toolBarGroup>
+              <a4j:commandLink  action="#{siteNodeListBean.launchSpacialization}"  ajaxSingle="true" reRender="resultsDiv"  value="Spacialization"/>
+            </rich:toolBarGroup>
+            <rich:toolBarGroup>
+                <a4j:commandLink value="Show Crawler Progress" id="showprogressbarlink" oncomplete="javascript:Richfaces.showModalPanel('sitenodedatatableform:panelProgress', {width:'600', height:'400'});" reRender="progressModalPanelDiv">
+              </a4j:commandLink>
+            </rich:toolBarGroup>
+            <rich:toolBarGroup>
+              <a4j:commandLink  action="#{siteNodeListBean.reCrawl}"  ajaxSingle="true" reRender="resultsDiv"  value="Recrawl all validated websites"/>
+            </rich:toolBarGroup>
+            </rich:toolBar>
+            <rich:spacer height="20"/>
+            <div class="actionButtons">
+              <h:commandButton id="search" value="Search" action="#{siteNodeListBean.initSiteNodes}" />
+              <h:commandButton id="reset" value="Reset" action="/admin/siteNodeList.xhtml" />
+              <a4j:commandLink id="checkAllButton" value="Check All" onclick="checkAll();"/>
+            </div>
+
+
+        </rich:simpleTogglePanel>
+
+        <rich:spacer height="40"/>
+
+
+        </h:form>
+
+        <h:form id="sitenodedatatableform">
+        <rich:panel>
+        <f:facet name="header"> Site Node List</f:facet>
+         <s:div styleClass="results" id="resultsDiv">
+
+          <rich:datascroller for="siteNodeListTable" page="#{siteNodeListBean.currentPage}" />
+          <rich:dataTable id="siteNodeListTable" value="#{siteNodeListBean.siteNodes}" var="siteNode" rows="40" onRowMouseOver="this.style.backgroundColor='#F1F1F1'" onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'">
+           <f:facet name="header">
+                  <rich:columnGroup>
+                      <rich:column>
+                        <h:outputText value="Check" />
+                      </rich:column>
+                      <rich:column>
+                          <h:outputText value="Name" />
+                      </rich:column>
+                      <rich:column>
+                          <h:outputText value="URL" />
+                      </rich:column>
+                      <rich:column>
+                          <h:outputText value="Description" />
+                      </rich:column>
+                      <rich:column >
+                          <h:outputText value="Category" />
+                      </rich:column>
+                      <rich:column>
+                          <h:outputText value="Status" />
+                      </rich:column>
+                      <rich:column>
+                          <h:outputText value="Language" />
+                      </rich:column>
+                      <rich:column>
+                          <h:outputText value="Action To Do" />
+                      </rich:column>
+                      <rich:column>
+                          <h:outputText value="Actions" />
+                      </rich:column>
+                  </rich:columnGroup>
+                </f:facet>
+                <rich:column>
+                  <h:selectBooleanCheckbox value="#{siteNode.checked}" />
+                </rich:column>
+                <rich:column>
+                        <s:link id="siteNodeLink" value="#{siteNode.name}"  propagation="none" view="/admin/siteNode.xhtml">
+                            <f:param name="siteNodeId"  value="#{siteNode.id}"/>
+                        </s:link>
+                </rich:column>
+                <rich:column>
+                    <h:outputText value="#{siteNode.url}" />
+                </rich:column>
+                <rich:column>
+                    <h:outputText value="#{siteNode.description}" />
+                </rich:column>
+                <rich:column>
+                    <h:outputText value="#{siteNode.category.name}" />
+                </rich:column>
+                <rich:column>
+                    <h:outputText value="#{siteNode.siteNodeStatus.getFullName()}" />
+                </rich:column>
+                <rich:column>
+                    <h:outputText value="#{siteNode.language}" />
+                </rich:column>
+                <rich:column>
+                    <h:outputText value="#{siteNode.siteNodeAction.getFullName()}" />
+                </rich:column>
+                <rich:column>
+
+                  <a4j:commandLink oncomplete="openPopup('#{siteNode.url}');">
+                    <h:graphicImage value="/img/email.png" alt="View" height="16" title="View" styleClass="actionimg"/>
+                  </a4j:commandLink>
+                  <a4j:commandLink  action="#{siteNodeListBean.validateNode(siteNode)}"  ajaxSingle="true" reRender="resultsDiv"  >
+                         <h:graphicImage value="/img/accept.png" alt="Validate" height="16" title="Validate"/>
+                  </a4j:commandLink >
+
+                  <s:link id="editSiteNodeLink" propagation="none" view="/admin/siteNode.xhtml">
+                            <f:param name="siteNodeId"  value="#{siteNode.id}"/>
+                            <h:graphicImage value="/img/process.png" alt="Edit" height="16" title="Edit" />
+                  </s:link>
+
+                  <!--<a4j:commandLink id="crawlSiteNodeLink" action="#{siteNodeListBean.launchCrawl(siteNode)}" ajaxSingle="true"  >
+                       <h:graphicImage value="/img/google.png" alt="Crawl" height="16" title="Crawl"/>
+                  </a4j:commandLink> -->
+
+                  <a4j:commandLink  action="#{siteNodeListBean.unvalidateNode(siteNode)}"  ajaxSingle="true" reRender="resultsDiv"  >
+                         <h:graphicImage value="/img/delete.png" alt="Delete" height="16" title="Delete"/>
+                  </a4j:commandLink >
+
+                </rich:column>
+             </rich:dataTable>
+             <rich:datascroller for="siteNodeListTable" page="#{siteNodeListBean.currentPage}" />
+
+            <br />
+            <br />
+            <h:commandButton value="Validate All checked" action="#{siteNodeListBean.validateAll}" reRender="resultsDiv"/>
+            <h:commandButton value="Unvalidate All checked" action="#{siteNodeListBean.unvalidateAll}" reRender="resultsDiv"/>
+            <br />
+            <br />
+        </s:div>
+    </rich:panel>
+    <s:div id="progressModalPanelDiv">
+        <rich:modalPanel id="panelProgress" width="600" height="400" >
+        <f:facet name="header">
+            <h:panelGroup>
+                <h:outputText value="Crawler Progress"></h:outputText>
+            </h:panelGroup>
+        </f:facet>
+        <f:facet name="controls">
+            <h:panelGroup>
+                <h:graphicImage value="/img/delete.png" styleClass="hidelink" id="hidelink"/>
+                <rich:componentControl for="sitenodedatatableform:panelProgress" attachTo="hidelink" operation="hide" event="onclick"/>
+            </h:panelGroup>
+        </f:facet>
+       <rich:dataTable var="siteNode" value="#{crawlerStatus.processingSiteNodeList}" id="progresstable" >
+        <rich:column>
+        <f:facet name="header">Progress</f:facet>
+        <h:outputText value="#{siteNode.name}" id="progresslabel"/>
+        <rich:progressBar value="#{siteNode.progress}"  ajaxSingle="true" interval="1000" reRenderAfterComplete="progressModalPanelDiv" reRender="progresslabel" eventsQueue="progressBarQueue"
+                 minValue="0" maxValue="100">
+          <f:facet name="complete">
+            <h:outputText value="#{siteNode.name} : Process finished" />
+          </f:facet>
+           <h:outputText value="#{siteNode.progress} %"/>
+        </rich:progressBar>
+      </rich:column>
+      </rich:dataTable>
+    </rich:modalPanel>
+  </s:div>
+   </h:form>
+  </ui:define>
+</ui:composition>

@@ -1,0 +1,74 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="userForm">
+
+        <rich:panel>
+            <f:facet name="header">Ajouter un utilisateur</f:facet>
+
+           <h:panelGrid columns="2">
+             <h:panelGroup>
+              <s:decorate id="loginField" template="/layout/edit.xhtml">
+                  <ui:define name="label">Login</ui:define>
+                  <h:inputText id="name" required="true"
+                              value="#{userHome.instance.userName}"/>
+              </s:decorate>
+
+              <s:decorate id="passwordField" template="/layout/edit.xhtml">
+                  <ui:define name="label">Password</ui:define>
+                  <h:inputSecret  id="name" required="true" value="#{userHome.instance.passwordHash}" />
+              </s:decorate>
+
+            <s:decorate id="emailField" template="/layout/edit.xhtml">
+                <ui:define name="label">Email</ui:define>
+                <h:inputText id="name" required="true"
+                             value="#{userHome.instance.email}"/>
+            </s:decorate>
+
+            <s:decorate id="firstNameField" template="/layout/edit.xhtml">
+                <ui:define name="label">Prenom</ui:define>
+                <h:inputText id="name" required="true"
+                             value="#{userHome.instance.firstName}"/>
+            </s:decorate>
+
+            <s:decorate id="lastNameField" template="/layout/edit.xhtml">
+                <ui:define name="label">Nom</ui:define>
+                <h:inputText id="name" required="true"
+                             value="#{userHome.instance.lastName}"/>
+            </s:decorate>
+            <!--  <div style="clear:both"/>-->
+          </h:panelGroup>
+          <h:panelGroup>
+
+            <s:decorate id="roleListSelectPickListDecorate" template="/layout/edit.xhtml" >
+            <ui:define name="label">Roles de l'utilisateur </ui:define>
+            <rich:pickList id="roleListSelectPickList" copyAllControlLabel="Tout attribuer" copyControlLabel="Attribuer" removeAllControlLabel="Tout supprimer"  removeControlLabel="Supprimer"  value="#{userHome.instance.userRoles}">
+              <s:selectItems var="role" value="#{cmsRoleList.resultList}"  label="#{role.roleName}"/>
+              <s:convertEntity />
+            </rich:pickList>
+            </s:decorate>
+          </h:panelGroup>
+        </h:panelGrid>
+        </rich:panel>
+
+        <div class="actionButtons">
+            <h:commandButton id="save" value="Sauvegarder" action="#{userHome.persist}" rendered="#{!userHome.managed}"/>
+            <h:commandButton id="update"  value="Sauvegarder" action="#{userHome.update}" rendered="#{userHome.managed}"/>
+            <h:commandButton id="delete" value="Supprimer" action="#{userHome.remove}" immediate="true" rendered="#{userHome.managed}"/>
+            <s:button propagation="end" id="done" value="Terminer" view="/admin/userList.xhtml"/>
+        </div>
+
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

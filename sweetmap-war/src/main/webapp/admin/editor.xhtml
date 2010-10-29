@@ -1,0 +1,36 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a4j="http://richfaces.org/a4j"
+    >
+<ui:fragment>
+<!--<a4j:loadScript src="/javascript/jquery.js" />
+<a4j:loadScript src="resource:///org/richfaces/renderkit/html/scripts/jquery/jquery.js" />
+-->
+
+<a4j:loadScript src="/javascript/jwysiwyg/jquery.wysiwyg.js" />
+<a4j:loadScript src="/javascript/jwysiwyg/jquery.wysiwyg.pack.js" />
+
+<!--<a4j:loadScript src="/javascript/markitup/jquery.markitup.js" />
+<a4j:loadScript src="/javascript/markitup/sets/default/set.js"/>
+<a4j:loadStyle src="/javascript/markitup/skins/markitup/style.css"  />
+<a4j:loadStyle src="/javascript/markitup/sets/default/style.css"   />
+  <script type="text/javascript">
+    jQuery.noConflict();
+    jQuery(document).ready(function()	{
+    jQuery('#textEntryForm:editor').markItUp(mySettings);
+});
+</script>
+  -->
+  <script type="text/javascript">
+  jQuery(document).ready(function()	{
+    jQuery('#textEntryForm:editor').wysiwyg();
+  });
+</script>
+  <h:inputTextarea value="#{textEntryHome.instance.content}"  id="editor" cols="80" rows="20"/>
+</ui:fragment>
+</ui:composition>

@@ -1,0 +1,105 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:a4j="http://richfaces.org/a4j"
+    template="/layout/template.xhtml">
+
+<ui:define name="body">
+  <rich:panel>
+    <f:facet name="header">Selectionnez les fichiers à importer</f:facet>
+      <h:form id="clientImporterForm">
+      <h:panelGrid columns="2" columnClasses="top,top" cellpadding="1" cellspacing="1">
+      <rich:fileUpload id="upload"
+            fileUploadListener="#{importClientService.fileUploadListener}"
+            maxFilesQuantity="5"
+            reRender="table"
+            allowFlash="true"
+            >
+            <a4j:support event="onuploadcomplete" reRender="fileListPanel" />
+      </rich:fileUpload>
+      <h:panelGroup id="fileListPanel">
+        <rich:panel>
+        <f:facet name="header">Fichiers téléchargés :</f:facet>
+        <rich:dataGrid id="filegrid" value="#{importClientService.availableFileList}" var="file">
+              <h:panelGrid columns="2">
+                <h:selectBooleanCheckbox value="#{file.selected}" />
+                <h:outputText value="#{file.fileName}" />
+              </h:panelGrid>
+        </rich:dataGrid>
+        </rich:panel>
+      </h:panelGroup>
+      <h:panelGroup>
+          <s:decorate id="separator" template="/layout/edit.xhtml">
+            <ui:define name="label">Separateur</ui:define>
+            <h:selectOneRadio value="#{importClientService.separator}">
+            <f:selectItem itemValue="," itemLabel="Virgule"/>
+            <f:selectItem itemValue=";" itemLabel="Point Virgule"/>
+            <f:selectItem itemValue=" " itemLabel="Espace"/>
+            <f:selectItem itemValue="\t" itemLabel="Tabulation"/>
+            </h:selectOneRadio>
+          </s:decorate>
+      </h:panelGroup>
+      <h:panelGroup>
+        <s:decorate id="categoryfield" template="/layout/edit.xhtml">
+        <ui:define name="label">Categorie</ui:define>
+          <h:selectOneMenu value="#{importClientService.category}" required="true" requiredMessage="Selectionnez une categorie">
+            <s:selectItems var="category" value="#{crmCategoryList}" noSelectionLabel="Selectionnez une categorie" label="#{category.name}"/>
+            <s:convertEntity />
+         </h:selectOneMenu>
+        </s:decorate>
+      </h:panelGroup>
+      <h:panelGroup>
+        <h:outputText value="Selectionnez les fichiers a importer puis cliquez sur Importer" />
+      </h:panelGroup>
+      <h:panelGroup>
+        <s:div styleClass="actionButtons" id="buttonsActions">
+          <h:commandButton id="import" value="Importer" action="#{importClientService.importCSVDatas}">
+            <a4j:support event="oncomplete" reRender="importedsdata, buttonsActions"/>
+          </h:commandButton>
+          <h:commandButton id="save" value="Sauvegarder" action="#{importClientService.saveDatas}">
+            <a4j:support event="oncomplete" reRender="importedsdata,filegrid "/>
+          </h:commandButton>
+        </s:div>
+      </h:panelGroup>
+      </h:panelGrid>
+    </h:form>
+  </rich:panel>
+
+
+  <rich:spacer height="30" />
+
+
+  <rich:panel id="importedsdata" rendered="#{not empty importClientService.clientListImported}">
+  <f:facet name="header">Données Importées</f:facet>
+    <h:form>
+    <rich:datascroller for="clientMailList"
+        boundaryControls="auto" stepControls="hide" fastControls="hide" renderIfSinglePage="false"/>
+    <rich:spacer height="30" />
+    <rich:dataTable id="clientMailList" var="clientMail" value="#{importClientService.clientListImported}" style="text-align: center;" rows="50">
+      <rich:column>
+        <f:facet name="header">Email</f:facet>
+          <h:outputText value="#{clientMail.email}" />
+      </rich:column>
+     <rich:column>
+        <f:facet name="header">Titre</f:facet>
+          <h:outputText value="#{clientMail.title}" />
+      </rich:column>
+      <rich:column>
+        <f:facet name="header">Nom</f:facet>
+          <h:outputText value="#{clientMail.name}" />
+      </rich:column>
+      <rich:column>
+        <f:facet name="header">Prenom</f:facet>
+          <h:outputText value="#{clientMail.firstName}" />
+      </rich:column>
+    </rich:dataTable>
+    </h:form>
+  </rich:panel>
+</ui:define>
+
+</ui:composition>

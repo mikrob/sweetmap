@@ -1,0 +1,16 @@
+#Tue Sep 29 19:55:51 CEST 2009
+action.package=sweetmap.services
+action.sources=/sweetmap-services/src/main/java
+eclipse.preferences.version=1
+model.package=org.sweetmap.entities
+model.sources=/sweetmap-entities/src/main/java
+seam.ejb.project=sweetmap-services
+seam.project.connection.profile=
+seam.project.deployment.type=ear
+seam.project.settings.version=1.1
+seam.project.web.root.folder=/sweetmap-war/src/main/webapp
+seam.runtime.name=jboss-seam-2.1.1.GA
+seam.test.creating=false
+seam.test.project=sweetmap-services
+test.package=org.domain.dreamislecmsservices.test
+test.sources=/sweetmap-services/src/main/java

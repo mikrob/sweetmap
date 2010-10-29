@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages xmlns="http://jboss.com/products/seam/pages"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+
+       no-conversation-view-id="/home.xhtml"
+       login-view-id="/login.xhtml">
+
+    <page view-id="*">
+        <navigation>
+            <rule if-outcome="home">
+                <redirect view-id="/home.xhtml"/>
+            </rule>
+        </navigation>
+    </page>
+    
+    <page view-id="/home.xhtml">
+        <rewrite pattern="/" />
+    </page>
+
+    <page view-id="/search.xhtml">
+        <rewrite pattern="/search/{searchPattern}"/> 
+        <rewrite pattern="/search"/>
+        
+        <param name="searchPattern" 
+               value="#{searchService.searchPattern}"/>     
+    </page>
+
+    <page view-id="/admin/*"  login-required="true" ></page> 
+    
+    <exception class="org.jboss.seam.framework.EntityNotFoundException">
+        <redirect view-id="/error.xhtml">
+            <message severity="warn">Enregistrement introuvable.</message>
+        </redirect>
+    </exception>
+    
+    <exception class="javax.persistence.EntityNotFoundException">
+        <redirect view-id="/error.xhtml">
+            <message severity="warn">Enregistrement introuvable.</message>
+        </redirect>
+    </exception>
+    
+    <exception class="javax.persistence.EntityExistsException">
+        <redirect view-id="/error.xhtml">
+            <message severity="warn">L'enregistrement existe déjà.</message>
+        </redirect>
+    </exception>
+    
+    <exception class="javax.persistence.OptimisticLockException">
+        <end-conversation/>
+        <redirect view-id="/error.xhtml">
+            <message severity="warn">Accès concurrent.</message>
+        </redirect>
+    </exception>
+    
+    <exception class="org.jboss.seam.security.AuthorizationException">
+        <redirect view-id="/error.xhtml">
+            <message severity="error">Vous n'êtes pas autorisé à accéder à cette ressource.</message>
+        </redirect>
+    </exception>
+    
+    <exception class="org.jboss.seam.security.NotLoggedInException">
+        <redirect view-id="/login.xhtml">
+            <message severity="warn">#{messages['org.jboss.seam.NotLoggedIn']}</message>
+        </redirect>
+    </exception>
+    
+    <exception class="javax.faces.application.ViewExpiredException">
+        <redirect view-id="/error.xhtml">
+            <message severity="warn">Votre session a expiré, veuillez reessayer.</message>
+        </redirect>
+    </exception>
+    
+    <exception class="org.jboss.seam.ConcurrentRequestTimeoutException" log-level="trace">
+      <http-error error-code="503" />
+    </exception>
+     
+    <exception>
+        <redirect view-id="/error.xhtml">
+            <message severity="error">Erreur inconnue veuillez réessayer.</message>
+        </redirect>
+    </exception>
+    
+</pages>

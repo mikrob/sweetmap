@@ -1,0 +1,68 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view contentType="text/html" xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:c="http://java.sun.com/jstl/core">
+<html>
+<head>
+
+  <script type="text/javascript">
+    jQuery.noConflict();
+  </script>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+  <a4j:loadStyle src="/stylesheet/li-scroller.css" />
+  <a4j:loadScript src="resource://jquery.js"/>
+  <a4j:loadScript src="/javascript/jquery.li-scroller.1.0.js" />
+
+  <f:verbatim>
+
+   <script type="text/javascript">
+   jQuery(document).ready(function(){
+     jQuery("#ticker01").liScroll();
+     jQuery("#top").mouseover(function(){
+         jQuery("#top").slideUp('slow');
+         jQuery("#top").hide();
+         jQuery("#fulltext").slideDown('slow');
+         jQuery("#debug").html("scrolink Mouse over");
+       });
+     jQuery("#fulltext").mouseout(function(){
+         jQuery("#fulltext").slideUp('slow');
+         jQuery("#fulltext").hide();
+         jQuery("#top").slideDown('slow');
+         jQuery("#debug").html("Full text Mouse out");
+       });
+
+   });
+
+
+
+   </script>
+
+  </f:verbatim>
+    <title><h:outputText value="#{messages['org.sweetmap.main.sweetmap']}"/></title>
+  </head>
+<body>
+    <div id="wrapper"></div>
+    <div id="top">
+              <f:verbatim>
+              <ul id="ticker01">
+                <li><a class="scrolink">
+                "Après cela, Madame, il faut, s'il vous plaît, retourner à Nouvelle Amitié, pour voir par quelle route on va de là à Tendre sur Reconnaissance. Voyez donc, je vous prie, comment il faut aller d'abord de Nouvelle Amitié à Complaisance, ensuite à ce petit village qui se nomme Soumission, et qui en touche un autre fort agréable, qui s'appelle Petits Soins. Voyez, dis-je, que de là il faut passer par Assiduité, pour faire entendre que ce n'est pas assez d'avoir durant quelques jours tous ces petits soins obligeants, qui donnent tant de reconnaissance, si on ne les a assidûment. Ensuite vous voyez qu'il faut passer à un autre village qui s'appelle Empressement et ne faire pas comme certaines gens tranquilles, qui ne se hâtent pas d'un moment, quelque prière qu'on leur fasse, et qui sont incapables d'avoir cet empressement qui oblige quelquefois si fort. Après cela, vous voyez qu'il faut passer à Grands Services, et que, pour marquer qu'il y a peu de gens qui en rendent de tels, ce village est plus petit que les autres. Ensuite il faut passer à Sensibilité, pour faire connaître qu'il faut sentir jusqu'aux plus petites douleurs de ceux qu'on aime. Après, il faut, pour arriver à Tendre, passer par Tendresse, car l'amitié attire l'amitié. Ensuite, il faut aller à Obéissance, n'y ayant presque rien qui engage plus le coeur de ceux à qui on obéit, que de le faire aveuglément ; et pour arriver enfin où l'on veut aller, il faut passer à Constante Amitié, qui est sans doute le chemin le plus sûr, pour arriver à Tendre sur Reconnaissance." Clélie
+                </a></li>
+              </ul>
+              </f:verbatim>
+    </div>
+    <div id="fulltext" style="display:none;">
+                "Après cela, Madame, il faut, s'il vous plaît, retourner à Nouvelle Amitié, pour voir par quelle route on va de là à Tendre sur Reconnaissance. Voyez donc, je vous prie, comment il faut aller d'abord de Nouvelle Amitié à Complaisance, ensuite à ce petit village qui se nomme Soumission, et qui en touche un autre fort agréable, qui s'appelle Petits Soins. Voyez, dis-je, que de là il faut passer par Assiduité, pour faire entendre que ce n'est pas assez d'avoir durant quelques jours tous ces petits soins obligeants, qui donnent tant de reconnaissance, si on ne les a assidûment. Ensuite vous voyez qu'il faut passer à un autre village qui s'appelle Empressement et ne faire pas comme certaines gens tranquilles, qui ne se hâtent pas d'un moment, quelque prière qu'on leur fasse, et qui sont incapables d'avoir cet empressement qui oblige quelquefois si fort. Après cela, vous voyez qu'il faut passer à Grands Services, et que, pour marquer qu'il y a peu de gens qui en rendent de tels, ce village est plus petit que les autres. Ensuite il faut passer à Sensibilité, pour faire connaître qu'il faut sentir jusqu'aux plus petites douleurs de ceux qu'on aime. Après, il faut, pour arriver à Tendre, passer par Tendresse, car l'amitié attire l'amitié. Ensuite, il faut aller à Obéissance, n'y ayant presque rien qui engage plus le coeur de ceux à qui on obéit, que de le faire aveuglément ; et pour arriver enfin où l'on veut aller, il faut passer à Constante Amitié, qui est sans doute le chemin le plus sûr, pour arriver à Tendre sur Reconnaissance." Clélie
+    </div>
+    <div id="debug">
+
+    </div>
+  </body>
+</html>
+</f:view>

@@ -1,0 +1,102 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:a4j="http://richfaces.org/a4j"
+    template="/layout/template.xhtml"
+    >
+
+
+<ui:define name="body">
+    <h:form id="siteNodeForm">
+    <s:validateAll>
+        <rich:panel>
+            <f:facet name="header">SiteNode</f:facet>
+
+            <h:panelGrid columns="1"  cellpadding="1" cellspacing="1">
+
+            <h:panelGroup>
+
+            <!--<s:decorate id="nameField" template="/layout/edit.xhtml">
+                <ui:define name="label">Name</ui:define>
+                <h:inputText id="name" required="true"  size="50"  value="#{siteNodeHome.instance.name}" />
+            </s:decorate>
+
+            --><s:decorate id="urlField" template="/layout/edit.xhtml" rendered="#{!siteNodeHome.managed}">
+                <ui:define name="label">URL</ui:define>
+                <h:inputText id="url" required="true"  size="100"  value="#{siteNodeHome.instance.url}" />
+            </s:decorate>
+
+            <s:div id="urlField2"  rendered="#{siteNodeHome.managed}" styleClass="prop">
+                  <span class="name">
+                      <h:outputText value="URL" />
+                  </span>
+                  <span class="value">
+                    <h:outputText value="#{siteNodeHome.instance.url}" />
+                  </span>
+            </s:div>
+
+            <s:decorate id="descriptionField" template="/layout/edit.xhtml">
+                <ui:define name="label">Description</ui:define>
+                <h:inputText id="url" required="false"  size="100"  value="#{siteNodeHome.instance.description}" />
+            </s:decorate>
+
+            <s:decorate id="categoryField"  template="/layout/edit.xhtml">
+                <ui:define name="label">Categorie</ui:define>
+                <h:selectOneMenu value="#{siteNodeHome.instance.category}" required="true">
+                  <s:selectItems value="#{categoryList.resultList}"  var="category" label="#{category.name}" noSelectionLabel="Select a Category..."/>
+                  <s:convertEntity />
+                </h:selectOneMenu>
+            </s:decorate>
+
+
+          <s:decorate id="statusField"  template="/layout/edit.xhtml">
+           <ui:define name="label">Status</ui:define>
+           <h:selectOneMenu value="#{siteNodeHome.instance.siteNodeStatus}" >
+              <s:selectItems var="status" value="#{siteNodeStatusList}"  noSelectionLabel="Select a status..." label="#{status.getFullName()}"/>
+             <s:convertEnum />
+          </h:selectOneMenu>
+          </s:decorate>
+
+
+         <s:decorate id="siteNodeActionsField"  template="/layout/edit.xhtml">
+           <ui:define name="label">Action To Do</ui:define>
+           <h:selectOneMenu value="#{siteNodeHome.instance.siteNodeAction}" >
+              <s:selectItems var="status" value="#{siteNodeActionList}"  noSelectionLabel="Select an action" label="#{status.getFullName()}"/>
+             <s:convertEnum />
+          </h:selectOneMenu>
+          </s:decorate>
+
+        <s:decorate id="langaugeField" template="/layout/edit.xhtml">
+        <ui:define name="label">Language</ui:define>
+        <h:selectOneMenu value="#{siteNodeHome.instance.language}" required="true">
+          <f:selectItem itemLabel="English" itemValue="en"/>
+          <f:selectItem itemLabel="Francais" itemValue="fr"/>
+        </h:selectOneMenu>
+        </s:decorate>
+
+        </h:panelGroup>
+
+
+           <h:panelGroup>
+          <div class="actionButtons">
+              <h:commandButton id="save"  value="Save" action="#{siteNodeHome.persist}"  rendered="#{!siteNodeHome.managed}"/>
+              <h:commandButton id="update" value="Save" action="#{siteNodeHome.update}"  rendered="#{siteNodeHome.managed}"/>
+              <h:commandButton id="delete" value="Delete"  action="#{siteNodeHome.remove}" immediate="true" rendered="#{siteNodeHome.managed}"/>
+              <s:button propagation="end" id="cancel" value="Cancel / Back to site Node List"  view="/admin/siteNodeList.xhtml"/>
+          </div>
+          </h:panelGroup>
+
+        </h:panelGrid>
+
+        </rich:panel>
+        </s:validateAll>
+  </h:form>
+
+</ui:define>
+
+</ui:composition>

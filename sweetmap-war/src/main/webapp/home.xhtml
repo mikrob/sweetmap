@@ -1,0 +1,178 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view contentType="text/html" xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:c="http://java.sun.com/jstl/core">
+<html>
+<head>
+
+  <script type="text/javascript">
+    jQuery.noConflict();
+  </script>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+  <a4j:loadStyle src="/stylesheet/public.css" />
+  <a4j:loadStyle src="/stylesheet/colorbox.css" />
+  <a4j:loadScript src="resource://jquery.js"/>
+  <a4j:loadScript src="/javascript/jquery.colorbox.js"/>
+  <a4j:loadStyle src="/stylesheet/li-scroller.css" />
+  <a4j:loadScript src="/javascript/jquery.li-scroller.1.0.js" />
+  <a4j:loadScript src="/javascript/jquery.li-scroller.clone.1.0.js" />
+
+
+  <f:verbatim>
+
+   <script type="text/javascript">
+   /*<![CDATA[*/
+   var visible = null;
+   var scrolling = false;
+   jQuery(document).ready(function(){
+      jQuery('#nav li a').click(function(){
+        var linkid  = jQuery(this).attr("name");
+        var toLoad = jQuery(this).attr('href');
+        var pos = linkid.indexOf('link', 0);
+        var divBegin = linkid.substring(0, pos);
+        if (visible != null) {
+            jQuery(visible).hide('slow');
+        }
+        var divid = "#" + divBegin + 'content';
+
+        if (linkid != "accueillink") {
+          jQuery("#top").hide('slow');
+        } else {
+          jQuery("#top").show('fast');
+        }
+        jQuery(divid).show('slow');
+        visible = divid;
+        jQuery('#load').remove();
+        jQuery('#wrapper').append('<span id="load">LOADING...</span>');
+        jQuery('#load').fadeIn('normal');
+      });
+
+      jQuery('#nav li a').each(function(i)  {
+        jQuery(this).hover(
+           function() {
+             jQuery(this).animate({ fontSize: "2em" }, 300);
+               jQuery(this).css({color:'#C9467A'});
+           },
+           function() {
+             jQuery(this).animate({  fontSize: "1em" }, 300);
+             jQuery(this).css({color:'grey'});
+           });
+       });
+      jQuery("#ticker01").liScrollClone();
+
+/*
+      jQuery(document).bind('cbox_closed', function() {
+          alert("Catched Close event, scrolling = " + scrolling);
+          jQuery("#ticker02").html("huhu");
+          jQuery("#ticker02").stop();
+          scrolling = false;
+      });
+*/
+
+   });
+
+    var HtmlText;
+    var siteId = -1;
+    function openPopup(siteNodeId, siteNodeUrl) {
+      siteId = siteNodeId;
+      var url = "./proxy.seam?siteNodeId=" + siteNodeId + "&amp;url=" + siteNodeUrl;
+      //var htmlContent = "<div id=\'scrollornotbutton\'><img id=\'divchanger\' src=\'/sweetmap/img/book.png\' style='cursor:hand'/></div><div id=\'divtextrenderer\' class=\'divopacity\'><ul id=\'ticker02\'><li><a id=\'scrolinkpopup\' class=\'scrolink\'></a></li></ul></div><div id=\'fulltext\' style=\'display:none\' ></div><div style=\'clear:both;\'></div> <iframe height=\'400px\' src=\'"+ url +"\'></iframe>";
+      var htmlContent = "<div id=\'fulltext\'>Loading... Please wait</div><div style=\'clear:both;\'></div> <iframe height=\'400px\' src=\'"+ url +"\'></iframe>";
+      jQuery.fn.colorbox({open:true, width:"80%", height:"750px", scrolling:false, html:htmlContent});
+      getTextEntry(siteNodeId);
+    }
+
+    function setHtmlText(data) {
+        //jQuery("#scrolinkpopup").html(data);
+        jQuery("#fulltext").html(data);
+        /*if (!scrolling) {
+            jQuery("#ticker02").liScroll();
+            scrolling = true;
+        }
+        jQuery("#scrollornotbutton").click(function(){
+            // stop the scroll
+            if (jQuery("#divtextrenderer").is(':visible')) {
+              jQuery("#divtextrenderer").hide();
+              jQuery("#fulltext").show('slow');
+              scrolling = false;
+            } else {
+              jQuery("#fulltext").hide();
+              jQuery("#divtextrenderer").show('slow');
+              //jQuery("#ticker02").liScroll();
+            }
+          });
+       */
+    }
+
+
+    /*]]>*/
+    </script>
+
+  </f:verbatim>
+    <title><h:outputText value="#{messages['org.sweetmap.main.sweetmap']}"/></title>
+  </head>
+<body>
+    <div id="wrapper"></div>
+    <div id="top">
+              <ul id="ticker01">
+                <li>
+                <a>
+                <h:outputText value="#{messages['org.sweetmap.main.scrollingtext']}"/>
+                </a>
+                </li>
+              </ul>
+    </div>
+    <div id="head">
+      <div id="title">
+        <h:graphicImage value="/img/titre_va.jpg" rendered="#{localeSelector.language == 'en'}" />
+        <h:graphicImage value="/img/titre_vf.jpg" rendered="#{localeSelector.language == 'fr'}" />
+      </div>
+      <div id="menu">
+        <ul id="nav">
+          <li><h:outputLink value="#" id="accueillink" name="accueilLink"><h:outputText value="#{messages['org.sweetmap.menu.accueil']}"/></h:outputLink></li>
+          <li><h:outputLink value="#" id="maplink" name="maplink"><h:outputText value="#{messages['org.sweetmap.menu.themap']}"/></h:outputLink></li>
+          <li><h:outputLink value="#" id="presentationlink" name="presentationlink" ><h:outputText value="#{messages['org.sweetmap.menu.presentation']}"/></h:outputLink></li>
+          <li><h:outputLink value="#" id="creditslink" name="creditsllink"><h:outputText value="#{messages['org.sweetmap.menu.credits']}"/></h:outputLink></li>
+          <li><h:outputLink value="#" id="contactslink" name="contactslink"><h:outputText value="#{messages['org.sweetmap.menu.contacts']}"/></h:outputLink></li>
+        </ul>
+      </div>
+    </div>
+    <div id="lang">
+      <h:form>
+      <h:commandLink id="languagefr" ><h:graphicImage styleClass="langimg" value="/img/drapeau_francais.jpg" />
+        <a4j:actionparam value="fr" assignTo="#{localeSelector.language}"/>
+      </h:commandLink>
+      <h:commandLink id="languageen" ><h:graphicImage styleClass="langimg" value="/img/drapeau-anglais.gif" />
+        <a4j:actionparam value="en" assignTo="#{localeSelector.language}"/>
+      </h:commandLink>
+      </h:form>
+    </div>
+    <div id="content">
+
+      <div id="accueilcontent" class="contentdiv">
+        <ui:include src="default.xhtml" />
+      </div>
+      <div id="mapcontent" class="contentdiv">
+        <ui:include src="map.xhtml" />
+      </div>
+      <div id="presentationcontent" class="contentdiv">
+        <ui:include src="presentation.xhtml" />
+      </div>
+      <div id="creditscontent" class="contentdiv">
+        <ui:include src="credits.xhtml" />
+      </div>
+      <div id="contactscontent" class="contentdiv">
+        <ui:include src="contacts.xhtml" />
+      </div>
+    </div>
+    <div id="footer">
+    </div>
+  </body>
+</html>
+</f:view>

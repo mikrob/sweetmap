@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<title>Developper documentation</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<style>
+body { font:80% Verdana,Tahoma,Arial,sans-serif; }
+h1, h2, h3, h4 {  font-family: "Trebuchet MS",Georgia,"Times New Roman",serif; }
+ul.toc { padding: 4px; margin-left: 0; }
+ul.toc li { list-style-type:none; }
+ul.toc li.heading2 { margin-left: 1em; }
+ul.toc li.heading3 { margin-left: 2em; }
+</style>
+</head>
+<body>
+<h1 id="Developper-documentation">Developper documentation<a href="#Developper-documentation" class="wiki-anchor">&para;</a></h1>
+
+
+	<h2 id="Environment-Setup">Environment Setup<a href="#Environment-Setup" class="wiki-anchor">&para;</a></h2>
+
+
+	<p>Caution : Everything must run with JDK 1.5<br />
+SVN URL: <a class="external" href="https://www.eservices.accelya.fr/svn/loader">https://www.eservices.accelya.fr/svn/loader</a><br />
+Seam version : 2.1.2</p>
+
+
+	<h3 id="IDE">IDE<a href="#IDE" class="wiki-anchor">&para;</a></h3>
+
+
+	<p>We'll use eclipse Ganymede (3.4)  or Galilleo (3.5) jee edition on this project.</p>
+
+
+	<h3 id="Server-br-JBoss-AS-510GA">Server : <br />
+<strong>JBoss AS 5.1.0.GA</strong><a href="#Server-br-JBoss-AS-510GA" class="wiki-anchor">&para;</a></h3>
+
+
+	<p>To install jboss you have to download it from jboss.org, and to decompress it in the folder that you want.<br />
+We have choosen jboss 5.1.0.GA. It would be better if we all have the same version.</p>
+
+
+	<p>Then you have to put the datasource file (eservices-loader-ds.xml) in the server/default/deploy folder. <br />
+This file configure the database connexion, so you have to change the jdbc connection line according to your development database.<br />
+You can find an example of this kind of file in the project eservices-loader-static on the SVN, i'll put all the static file on this directory. The database is your eservices development database.</p>
+
+
+	<p>When you add your server in the Server View in eclipse, you can double click on the server that you added to edit it.<br />
+Click on open launch configuration and set theses <strong>parameters</strong> :</p>
+
+
+<pre>
+-Djava.endorsed.dirs="/pathtojboss/jboss-5.1.0.GA/lib/endorsed" 
+-Dprogram.name="JBossTools JBoss 5.1.0 Runtime" -Xms128m -Xmx512m -Dcom.sun.management.jmxremote -Djava.net.preferIPv4Stack=true -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000  -Djava.awt.headless=true -XX:+UseConcMarkSweepGC -XX:+CMSPermGenSweepingEnabled -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=512m   
+</pre>
+
+	<p>Of course you have to adapt the -Djava.endorsed.dirs to your configuration.<br />
+If you have less than 4GB of RAM and if JBoss use too many ram for you, you can decrease the values of -Xms and Xmx to a lesser value, always a 8 multiple. You can also decrease the MaxPermSize if you have too many PermGen error.</p>
+
+
+	<p>Don't forget to put the JDBC 3 driver of postgre in the jboss-5.1.0.GA/server/default/lib folder.</p>
+
+
+	<p>You also have to replace jboss-log4.xml in jboss-5.1.0.GA/server/default/conf folder by the one you can found in the eservices-loader-static project.</p>
+
+
+	<h3 id="JMS-Configuration">JMS Configuration<a href="#JMS-Configuration" class="wiki-anchor">&para;</a></h3>
+
+
+	<p>Loader use JMS queue to make parallel processing through MDB Components.<br />
+You can find a destinations-services.xml file in the static project, please open it and copy his content in your jboss-5.1.0.GA/server/default/deploy/messaging/destinations-services.xml file. ( at the end of the file don't remove the existing jms queue).</p>
+
+
+	<h3 id="Plugins">Plugins<a href="#Plugins" class="wiki-anchor">&para;</a></h3>
+
+
+	<p>The link between parenthesis are the location site to install the plugin from the software update eclipse menu.</p>
+
+
+	<h2 id="1-JBoss-Tools-v3">1. JBoss Tools v3<a href="#1-JBoss-Tools-v3" class="wiki-anchor">&para;</a></h2>
+
+
+	<pre><code>To make your work easier you could install the Jboss Tools plugins v3 for eclipse, this plugin will help you to interact with Seam and the Jboss Server.<br />
+This plugin is optional but is helpful. You can install it by downloading it on the jboss.org website, and copying the extracted plugins and features folder on your eclipse installation.</code></pre>
+
+
+	<h2 id="2-Maven-installation-site-httpm2eclipsesonatypeorgupdate">2. Maven ( installation site : <a class="external" href="http://m2eclipse.sonatype.org/update/">http://m2eclipse.sonatype.org/update/</a>)<a href="#2-Maven-installation-site-httpm2eclipsesonatypeorgupdate" class="wiki-anchor">&para;</a></h2>
+
+
+	<pre><code>Now, as you can see, in the project i have already comited (loader/eservices-loader) there are pom.xml files which are the instruction file for building the project with maven2. <br />
+So you have to install maven2 on your  computer, and to configure an external tool in eclipse to build the project with it and with the arguments : clean install and with working directory : eservices-loader<br />
+You also have to configure the pom.xml of the eservices-loader-ear project and to change this line according to your jboss installation.<br />
+&amp;lt;outputDirectory&amp;gt;<br />
+/home/leakim/jboss-5.0.1.GA/server/default/deploy<br />
+&amp;lt;/outputDirectory&amp;gt;<br />
+The maven configuration of the project download the necessary libraries, build the three projects, build the webapp in a war, and then create an EAR file with all the   <br />
+ previous build.<br />
+Finally, if you have well configured the line explicated previously, the EAR file will be moved in your JBoss Deploy directory.</code></pre>
+
+
+	<pre><code>To use Maven for build the project please use a version &gt;= 2.0.9. In eclipse, next to the usual launch button you have a launch button with red luggage. Click on the<br />
+arrow on this button and then external tool configuration.<br />
+Point "Location" on your Maven local installation.<br />
+Point working directory on the parent project (eservices-loader)<br />
+Set in arguments : clean install<br />
+If you want skip the test : add -Dmaven.test.skip=true<br />
+Be sure to add in "Environnement" a JAVA_HOME variable, pointing on your jdk 1.5 installation. To generate maven site with quality report : mvn site site:deploy</code></pre>
+
+
+	<h2 id="3-Checkstyle-httpeclipse-cssfnetupdate">3. Checkstyle (<a class="external" href="http://eclipse-cs.sf.net/update">http://eclipse-cs.sf.net/update</a>)<a href="#3-Checkstyle-httpeclipse-cssfnetupdate" class="wiki-anchor">&para;</a></h2>
+
+
+	<pre><code>This plugin is intended to check if everyone use the same code syntax, the same name format for the classes, attributes and methods, and check a part of your code automatically.<br />
+If you don't respect the checkstyle configuration, you'll have warning and errors on your code. <br />
+Like we are good developper, we'll develop a project with NO WARNING AT ALL. So if you have warnings in your code, you'll have to justify its. Good developers don't like warnings. <br />
+If you respect the checkstyle configuration, i will not have to correct the code syntax when i'll make a code review on your sources code. <br />
+you could find the checkstyle.xml file on the SVN repository eservices-loader-static. <br />
+You can import the checkstyle file  in the Eclipse Preferences, by adding a new external file. When it is added you can set it as the default checkstyle file.<br />
+Checkstyle with our configuration must be activated on the eservices-loader-entites and eservices-loader-services projects.</code></pre>
+
+
+	<h2 id="4-AnyEdit-httpandreigmxhomedeeclipse">4. AnyEdit (<a class="external" href="http://andrei.gmxhome.de/eclipse/">http://andrei.gmxhome.de/eclipse/</a>)<a href="#4-AnyEdit-httpandreigmxhomedeeclipse" class="wiki-anchor">&para;</a></h2>
+
+
+	<pre><code>This plugin replace all the tab characters with space, if you don't have it, you will have error with the checkstyle.<br />
+On Eclipse preference, for any edit, check the checkbox replace tab with spaces.</code></pre>
+
+
+	<h2 id="eServices-Loader-architecture">eServices-Loader architecture<a href="#eServices-Loader-architecture" class="wiki-anchor">&para;</a></h2>
+
+
+	<p>As you can see if you checkout the eservices-loader project you have tree project inside it. Indeed, it's a MVC architecture.</p>
+
+
+	<p><strong>eservices-loader</strong><br />
+This project encapsulate the others to manage the library versioning, and the module configuration of the project.<br />
+<strong>eservices-loader-entites.</strong><br />
+This project will contains all the classes which are EJB Entities, or Model Classes.<br />
+<strong>eservices-loader-services</strong><br />
+This project will only contains services classes which means business classes.<br />
+<strong>eservices-loader-war</strong><br />
+This project will contains the webapp of the project, it is build on a war file.</p>
+
+
+	<h2 id="Databasebr-You-have-to-use-an-existing-eservices-databasae-for-develop">Database<br />
+    You have to use an existing eservices databasae for develop.<a href="#Databasebr-You-have-to-use-an-existing-eservices-databasae-for-develop" class="wiki-anchor">&para;</a></h2>
+
+
+	<h2 id="Boot-Loader">Boot Loader<a href="#Boot-Loader" class="wiki-anchor">&para;</a></h2>
+
+
+	<pre><code>You also have to create a working folder for the application.<br />
+In this folder add the file "loader.properties" found in eservices-loader-static project.<br />
+Then add a line in the table PropertiesFile with id 1, and path pointing on this file : /path/to/your/file/loader.properties<br />
+It is necessary to allow the application boot.<br />
+As you can see in the properties file you have to create folder, and to change the properties file corresponding to your local path.<br />
+Check in eservices-loader-static project, to know the content of the file.<br />
+The Log4J configuration can be found on this project also.<br />
+Then you can boot the application, hibernate will create the needed table.<br />
+Once it's done, you can execute the scripts contained in eservices-loader/sql/ to fill your database with the required data for file conversion.</code></pre>
+</body>
+</html>

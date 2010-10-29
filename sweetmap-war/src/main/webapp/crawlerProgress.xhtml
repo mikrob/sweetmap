@@ -1,0 +1,36 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:c="http://java.sun.com/jstl/core"
+    template="layout/template.xhtml">
+
+    <ui:define name="body">
+     <rich:panel>
+     <h1>Site Node Crawling Progression : </h1>
+      <s:div id="progressTableDiv">
+      <h:form>
+      <rich:dataTable var="siteNode" value="#{crawlerStatus.processingSiteNodeList}" id="progresstable" >
+      <rich:column>
+      <h:outputText value="#{siteNode.name} "/>
+      <f:facet name="header">Progress</f:facet>
+        <rich:progressBar value="#{siteNode.progress}"  ajaxSingle="true" interval="1000" reRenderAfterComplete="progressTableDiv" eventsQueue="progressBarQueue"
+                 minValue="0" maxValue="100">
+          <f:facet name="complete">
+            <h:outputText value="#{siteNode.name} : Process finished" />
+          </f:facet>
+           <h:outputText value="#{siteNode.progress} %"/>
+        </rich:progressBar>
+      </rich:column>
+      </rich:dataTable>
+      </h:form>
+      </s:div>
+
+     </rich:panel>
+    </ui:define>
+</ui:composition>

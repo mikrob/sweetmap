@@ -1,0 +1,47 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich">
+<h:form>
+<rich:panelMenu  mode="client"
+        iconExpandedGroup="disc" iconCollapsedGroup="disc"
+        iconExpandedTopGroup="chevronUp" iconGroupTopPosition="right"
+        iconCollapsedTopGroup="chevronDown" iconCollapsedTopPosition="right"  expandSingle="true"  selectedChild="#{menuState.selectedMenuItem}">
+
+        <rich:panelMenuGroup label="Blog" name="blog" id="blog" value="#{menuState.menu['blog']}">
+            <rich:panelMenuItem label="Home"  name="home" id="home" action="/home.xhtml" actionListener="#{menuBean.select}"  mode="server"/>
+            <rich:panelMenuItem label="Search"  name="search"  id="search" action="/search.xhtml" actionListener="#{menuBean.select}" mode="server" />
+        </rich:panelMenuGroup>
+
+        <rich:panelMenuGroup label="Administration"  name="admin" id="admin" rendered="#{s:hasRole('Administrator')}" value="#{menuState.menu['admin']}">
+
+          <rich:panelMenuGroup label="Articles" name="articles" id="articles" value="#{menuState.menu['articles']}">
+              <rich:panelMenuItem label="Liste des articles" name="articleList"  id="articleList" action="/admin/textEntryList.xhtml"  actionListener="#{menuBean.select}"  mode="server" />
+              <rich:panelMenuItem label="Ajouter un article" name="addArticle"  id="addArticle"  action="/admin/textEntry.xhtml" actionListener="#{menuBean.select}"  mode="server"  />
+            </rich:panelMenuGroup>
+
+            <rich:panelMenuGroup label="Categories" name="categories" id="categories" value="#{menuState.menu['categories']}">
+              <rich:panelMenuItem label="Ajouter une categorie" name="addCategory" id="addCategory" action="/admin/category.xhtml"  actionListener="#{menuBean.select}"  mode="server" />
+              <rich:panelMenuItem label="Liste des categories" name="categoryList" id="categoryList" action="/admin/categoryList.xhtml" actionListener="#{menuBean.select}"  mode="server" />
+            </rich:panelMenuGroup>
+
+            <rich:panelMenuGroup label="Tags" name="tags" id="tags" value="#{menuState.menu['tags']}">
+              <rich:panelMenuItem label="Liste des tags" name="tagList" id="tagList" action="/admin/tagList.xhtml" actionListener="#{menuBean.select}"  mode="server" />
+              <rich:panelMenuItem label="Ajouter un tag" name="addtag" id="addTag"  action="/admin/tag.xhtml"  actionListener="#{menuBean.select}"  mode="server" />
+            </rich:panelMenuGroup>
+
+          <rich:panelMenuGroup label="Utilisateurs" name="users" id="users" value="#{menuState.menu['users']}">
+              <rich:panelMenuItem label="Liste des utilisateurs"  name="userList" id="userLIst" action="/admin/userList.xhtml"  actionListener="#{menuBean.select}"  mode="server"  />
+              <rich:panelMenuItem label="Ajouter un utilisateur" name="addUser" id="addUser" action="/admin/user.xhtml" actionListener="#{menuBean.select}"  mode="server" />
+              <rich:panelMenuItem label="Liste des roles"  name="roleList" id="roleList" action="/admin/cmsRoleList.xhtml" actionListener="#{menuBean.select}"  mode="server"/>
+              <rich:panelMenuItem label="Ajouter un role" name="addRole" id="addRole" action="/admin/cmsRole.xhtml"  actionListener="#{menuBean.select}"  mode="server" />
+            </rich:panelMenuGroup>
+        </rich:panelMenuGroup>
+</rich:panelMenu>
+</h:form>
+</ui:composition>
+
+
+
